@@ -1,14 +1,28 @@
 from fastapi import APIRouter
 from config.db import connection
 from schemas.user import userEntity,usersEntity
-from models.user import User
-from domain.useCase.querys import executeQuery
+from models.user import User,Game
+from domain.useCase.querys import executeQuery,profileRecomendation,game_recommender
 
 user = APIRouter()
 
 @user.get('/query')
 def queryResult():
     return executeQuery()
+
+@user.get('/profileQuery/{id}')
+def profileQuery(id):
+    return profileRecomendation(id)
+
+@user.get('/colaborativeRecomendation')
+def colaborativeRecomendation():
+    return game_recommender()
+
+@user.put('/query')
+def queryInsert(game : Game):
+    new_game = dict(game)
+    id = connection.games.gameList.insert_one(dict(new_game)).inserted_id
+    return str(id)
 
 @user.get('/users')
 def findAllUsers():
@@ -30,5 +44,11 @@ def editExistingUser(id: str,user: User):
 @user.get('/getCalificationByUser/{value}')
 def getCalificationByUser(value):
     return userEntity(connection.usuarios.user.find_one({"id":value}))["GameCalification"]
+
+@user.get('/getUserById/{value}')
+def getUserById(value):
+    lista = []
+    lista.append(userEntity(connection.usuarios.user.find_one({"id":value})))
+    return lista
     
 

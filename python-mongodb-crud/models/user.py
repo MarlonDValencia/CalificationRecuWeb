@@ -9,3 +9,6 @@ class User(BaseModel):
     ProfileRecomendation : list
     email : str
     password : str
+
+class Game(BaseModel):
+    gamesList : list

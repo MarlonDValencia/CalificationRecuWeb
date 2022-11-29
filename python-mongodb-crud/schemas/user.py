@@ -1,5 +1,3 @@
-import uuid
-
 def userEntity(item) -> dict:
     return {
         "id": item["id"],
