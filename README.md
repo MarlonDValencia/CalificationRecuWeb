@@ -13,7 +13,7 @@ recuweb(FrontEnd)
 ### BackEnd
 1. Descargar el repositorio
 2. Moverse a la carpeta python-mongodb-crud y hacer pip install de los siguientes paquetes
-3. 
+
 pip install fastapi==0.88.0
 
 pip install uvicorn
