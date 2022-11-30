@@ -5,5 +5,6 @@ SPARQLWrapper
 scipy==1.7.3
 pandas
 sklearn
+sklearn.neighbors 
 typing
 pydantic
