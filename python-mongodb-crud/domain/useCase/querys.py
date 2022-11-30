@@ -158,10 +158,11 @@ def profileRecomendation(id:str):
     for i in users:
         if(i['id']==id):
             user=i
-    userGames=user['GameCalification'].keys()
+    #userGames=user['GameCalification'].keys()
     userGamesCalifications=user['GameCalification']
     userGamesCalificationMultiply=[]
-    for i in userGames:
+    userGamesCalifications={x:y for x,y in userGamesCalifications.items() if y!=0}
+    for i in userGamesCalifications:
         for game in gameList[0]["gamesList"]:
             if(game[0]==i):
                 aux=game.copy()
@@ -188,8 +189,13 @@ def profileRecomendation(id:str):
             differences[game[0]]=diff
     differences2={k: v for k, v in sorted(differences.items(), key=lambda item: item[1])}
     recomendations=[]
-    for i in range (0,5):
-        recomendations.append(list(differences2.keys())[i])
+    i=0
+    while i<len(differences2):
+        if i<=4:
+            recomendations.append(list(differences2.keys())[i])
+        else:
+            break
+        i+=1
 
     #Insercción Base De Datos
     inserction = {
@@ -219,7 +225,7 @@ def dataFrameFormatter():
     return df
 
 
-def game_recommender():
+def game_recommender(id):
     df = dataFrameFormatter()
     df1 = df.copy()
     number_neighbors = 4
@@ -271,9 +277,9 @@ def game_recommender():
                 predicted_r = 0
         
             df1.iloc[m,user_index] = predicted_r
-    return recommend_games(num_recommendation,df,df1)
+    return recommend_games(id,num_recommendation,df,df1)
 
-def recommend_games(num_recommended_games,df,df1):
+def recommend_games(id,num_recommended_games,df,df1):
     print('The list of the games {} Has played \n'.format("User"+str(len(df.columns)-1)))
     for m in df[df[("User"+str(len(df.columns)-1))] > 0][("User"+str(len(df.columns)-1))].index.tolist():
         print(m)
@@ -295,10 +301,14 @@ def recommend_games(num_recommended_games,df,df1):
         rank = rank + 1
         finalGames.append(str(recommended_game[0])+" "+str(recommended_game[1]))
 
+
+    
     inserction = {
     "id": id,
     "ColaborativeRecomendation": finalGames,
     }
+
+    print(inserction)
     connection.usuarios.user.find_one_and_update({"id":id}, {"$set": dict(inserction)})
 
     return finalGames

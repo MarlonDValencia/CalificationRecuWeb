@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from config.db import connection
 from schemas.user import userEntity,usersEntity
+from schemas.game import gamesEntity
 from models.user import User,Game
 from domain.useCase.querys import executeQuery,profileRecomendation,game_recommender
 
@@ -14,9 +15,9 @@ def queryResult():
 def profileQuery(id):
     return profileRecomendation(id)
 
-@user.get('/colaborativeRecomendation')
-def colaborativeRecomendation():
-    return game_recommender()
+@user.get('/colaborativeRecomendation/{id}')
+def colaborativeRecomendation(id):
+    return (str(game_recommender(id)).replace("[", "")).replace("]", "")
 
 @user.put('/query')
 def queryInsert(game : Game):
@@ -33,6 +34,11 @@ def findAllUsers():
 def createNewUser(user: User):
     new_user = dict(user)
     id = connection.usuarios.user.insert_one(new_user).inserted_id
+    inserction = {
+    "id": str(id),
+    }
+    print()
+    connection.usuarios.user.find_one_and_update({'_id':id}, {"$set": dict(inserction)})
     return str(id)
 
 @user.put('/edit/{id}')
@@ -50,5 +56,9 @@ def getUserById(value):
     lista = []
     lista.append(userEntity(connection.usuarios.user.find_one({"id":value})))
     return lista
+
+@user.get('/getAllGameSelection')
+def getAllGameSelection():
+    return gamesEntity(connection.games.gameSelection.find())
     
 

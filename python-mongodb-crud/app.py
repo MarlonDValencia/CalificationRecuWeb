@@ -10,6 +10,8 @@ origins = [
     "https://localhost.tiangolo.com",
     "http://localhost",
     "http://localhost:3000",
+    "http://localhost:3000/profileQuery",
+    "http://localhost:3000/edit"
 ]
 
 app.add_middleware(
