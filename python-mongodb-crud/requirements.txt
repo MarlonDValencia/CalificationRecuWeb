@@ -3,7 +3,6 @@ uvicorn
 pymongo
 SPARQLWrapper
 scipy==1.7.3
-operator
 pandas
 sklearn
 typing
