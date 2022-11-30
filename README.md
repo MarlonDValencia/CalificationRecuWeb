@@ -1,14 +1,14 @@
 # CalificationRecuWeb
-##Tecnologíás usadas:
+## Tecnologíás usadas:
 BackENd - FastApi/Uvicorn/Python
 FrontEnd - React.js/Javascript
 
-##Carpetas 
+## Carpetas 
 python-mongodb-crud (BackEnd)
 recuweb(FrontEnd)
 
-#Proceso para correr la aplicacion web
-###BackEnd
+# Proceso para correr la aplicacion web
+### BackEnd
 1. Descargar el repositorio
 2. Moverse a la carpeta python-mongodb-crud y hacer pip install de los siguientes paquetes
 pip install fastapi==0.88.0
@@ -23,7 +23,7 @@ pip install typing
 pip install pydantic
 
 3. Correr el comando python -m uvicorn app:app --reload (Por defecto se inicia en 127.0.0.1:8000)
-###FrontEnd
+### FrontEnd
 
 1.Moverse a la carpeta recuweb y hacer npm install 
 npm install Swal
