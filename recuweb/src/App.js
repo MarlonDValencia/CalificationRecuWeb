@@ -3,9 +3,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.js";
 import Swal from 'sweetalert2'
 
-const url = 'http://localhost:8000/getAllGameSelection'
 function App() {
-  const [user, setUser] = useState(null)
+const [user, setUser] = useState(null)
+const [isReccomended, setIsReccomended] = useState(false)
+const [profileRec, setProfileRec] = useState('')
+const [colabRec, setColabRec] = useState('')
 
 const [juego1, setJuego1] = useState(0)
 const [juego2, setJuego2] = useState(0)
@@ -235,8 +237,8 @@ const callProfile = async (id) => {
     .then((responseData) => {
       return responseData;
     });
-    console.log(returnCall)
     setUser(returnCall)
+    setProfileRec(returnCall)
     callColaboratory(id,returnCall)
     return returnCall;
 }
@@ -248,25 +250,16 @@ const callColaboratory = async (id, profile) => {
   .then((responseData) => {
     return responseData;
   });
-  console.log(returnCall)
   setUser(returnCall)
-  Swal.fire(
-    'Las recomendaciones basadas en tu perfil son:',
-    profile,
-    'question'
-  )
-  Swal.fire(
-    'Tus recomendaciones basadas en colaboración son',
-    returnCall,
-    'question'
-  )
+  setColabRec(returnCall)
+  setIsReccomended(true)
   return returnCall;
 }
 
 
 
 useEffect(() => {
-}, [juego1,juego2,juego3,juego4,juego5,juego6,juego7,juego8,juego9,juego10,juego11,juego13,juego14,juego15,juego16,juego17,juego18,juego19,juego20,juego21,juego22,juego23,juego24,juego25,juego26,juego27,juego28,juego29,juego30,juego31])
+}, [isReccomended,profileRec,colabRec,juego1,juego2,juego3,juego4,juego5,juego6,juego7,juego8,juego9,juego10,juego11,juego13,juego14,juego15,juego16,juego17,juego18,juego19,juego20,juego21,juego22,juego23,juego24,juego25,juego26,juego27,juego28,juego29,juego30,juego31])
 
 
 const profileCalification = {
@@ -310,7 +303,21 @@ const profileCalification = {
 }
   return (
     <>
-  <div className="container text-center">
+    <div className="row">
+      { //Check if message failed
+        (isReccomended)
+          ? <div> 
+              <div>
+                <h5>Las recomendaciones en base a tu perfil son:</h5>
+                <h6>{profileRec.replace("[","").replace("]","").replace(",","")}</h6>
+              </div>
+              <div>
+                <h5>Las recomendaciones en base a colaboracion son:</h5>
+                <h6>{colabRec.replace('"',"")}</h6>
+              </div> 
+            </div> 
+          : <div>
+              <div className="container text-center">
       <div className="col">
         <h2>
           Bienvenido al sistema de recomendación
@@ -714,10 +721,13 @@ const profileCalification = {
             </div>  <></>
         <input className="col-md-2 btn btn-primary" type="submit" value="Submit"/>
         <div className="col-md-5"></div>
-        </div>
-        
+        </div>        
         </form>
       </div>
+             </div> 
+      }
+    </div>
+
   </>
   );
 }
