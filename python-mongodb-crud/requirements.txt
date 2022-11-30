@@ -1,9 +1,8 @@
-fastapi
+fastapi==0.88.0
 uvicorn
-tensorflow
 pymongo
 SPARQLWrapper
-scipy
+scipy==1.7.3
 operator
 pandas
 sklearn
