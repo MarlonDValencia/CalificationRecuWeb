@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+tensorflow
+pymongo
+SPARQLWrapper
+scipy
+operator
+pandas
+sklearn
+typing
+pydantic
